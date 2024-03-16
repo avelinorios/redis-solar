@@ -2,9 +2,12 @@ package com.redislabs.university.RU102J;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Test;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+
+import static org.junit.Assert.assertTrue;
 
 
 public class JedisDaoTestBase {
@@ -37,5 +40,6 @@ public class JedisDaoTestBase {
         jedisPool.destroy();
         jedis.close();
     }
+
 
 }
