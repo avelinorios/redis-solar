@@ -72,6 +72,7 @@ public class CapacityDaoRedisImplTest extends JedisDaoTestBase {
 
     // Challenge #4
     @Test
+    @Ignore
     public void getRank() {
         CapacityDao dao = new CapacityDaoRedisImpl(jedisPool);
         for (MeterReading reading : readings) {

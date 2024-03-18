@@ -5,7 +5,9 @@ import redis.clients.jedis.*;
 
 import java.nio.channels.Pipe;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class FeedDaoRedisImpl implements FeedDao {
@@ -22,6 +24,17 @@ public class FeedDaoRedisImpl implements FeedDao {
     @Override
     public void insert(MeterReading meterReading) {
         // START Challenge #6
+        try(Jedis jedis = this.jedisPool.getResource()) {
+            Map<String, String> entry = new HashMap<>();
+            entry.put("whGenerated", String.valueOf(meterReading.getWhGenerated()));
+            entry.put("tempC", String.valueOf(meterReading.getTempC()));
+            entry.put("whUsed", String.valueOf(meterReading.getWhUsed()));
+            entry.put("dateTime", String.valueOf(meterReading.getDateTime()));
+            entry.put("siteId", String.valueOf(meterReading.getSiteId()));
+
+            jedis.xadd(RedisSchema.getGlobalFeedKey(), StreamEntryID.NEW_ENTRY, entry);
+            jedis.xadd(RedisSchema.getFeedKey(meterReading.getSiteId()), StreamEntryID.NEW_ENTRY, entry);
+        }
         // END Challenge #6
     }
 
